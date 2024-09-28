@@ -2,10 +2,33 @@
 
 body {
   font-family: "Montserrat", sans-serif;
+  background-color: lightgray;
 }
-
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+}
+
+.s-bg {
+  height: 100dvh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.s-component {
+  background-color: #fff;
+  padding: 30px;
+  border-radius: 10px;
+}
+
+.logo {
+  width: 250px;
+  margin: 10px;
+}
+
+.error {
+  color: red;
+  text-align: center;
 }
