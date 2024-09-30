@@ -4,6 +4,7 @@ const {
   updateSuperAdmin,
   getSuperAdmin,
 } = require("../controllers/userController");
+
 const authenticateToken = require("../middleware/authenticateToken");
 
 const router = express.Router();

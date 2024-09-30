@@ -70,9 +70,6 @@ const getSuperAdmin = async (req, res) => {
       return res.status(401).json({ message: "Token is required." });
     }
 
-    // Verify the token
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
-
     // Find the super admin user by email
     const superAdminEmail = "admin@admin.admin"; // Define the super admin email
     const superAdmin = await User.findOne({ email: superAdminEmail }).select(
