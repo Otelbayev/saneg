@@ -73,6 +73,7 @@ const Navbar = () => {
         <Header
           style={{
             padding: 0,
+            height: "50px",
             background: "#fff",
             display: "flex",
             alignItems: "center",

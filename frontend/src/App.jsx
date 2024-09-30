@@ -1,10 +1,9 @@
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import Login from "./pages/login";
-import Home from "./pages/Home";
 import { useAuthContext } from "./hooks/useAuthContext";
-import Profile from "./pages/Profile";
 import Navbar from "./components/Navbar";
 import PrivateRoute from "./utils/PrivateRoute";
+import { routes } from "./utils/routes";
 
 function App() {
   const { user } = useAuthContext();
@@ -12,22 +11,13 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route element={<Navbar />}>
-          <Route
-            path="/"
-            element={
-              <PrivateRoute to="/">
-                <Home />
-              </PrivateRoute>
-            }
-          />
-          <Route
-            path="/profile"
-            element={
-              <PrivateRoute to="/profile">
-                <Profile />
-              </PrivateRoute>
-            }
-          />
+          {routes.map(({ path, element }, index) => (
+            <Route
+              key={index}
+              path={path}
+              element={<PrivateRoute to={path}>{element}</PrivateRoute>}
+            />
+          ))}
         </Route>
         <Route
           path="/login"
