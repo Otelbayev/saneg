@@ -3,13 +3,18 @@ import Login from "./pages/login";
 import Home from "./pages/Home";
 import { useAuthContext } from "./hooks/useAuthContext";
 import Signup from "./pages/Signup";
+import Profile from "./pages/Profile";
+import Navbar from "./components/Navbar";
 
 function App() {
   const { user } = useAuthContext();
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={user ? <Home /> : <Navigate to="login" />} />
+        <Route element={<Navbar />}>
+          <Route path="/" element={user ? <Home /> : <Navigate to="login" />} />
+          <Route path="/profile" element={<Profile />} />
+        </Route>
         <Route
           path="/login"
           element={!user ? <Login /> : <Navigate to="/" />}

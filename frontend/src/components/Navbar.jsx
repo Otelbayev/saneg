@@ -2,58 +2,69 @@ import React, { useState } from "react";
 import {
   MenuFoldOutlined,
   MenuUnfoldOutlined,
-  UploadOutlined,
-  UserOutlined,
-  VideoCameraOutlined,
+  FullscreenExitOutlined,
+  FullscreenOutlined,
 } from "@ant-design/icons";
 import { Button, Layout, Menu, theme } from "antd";
-import { useLogout } from "./../hooks/useLogout";
-import { useAuthContext } from "../hooks/useAuthContext";
+import logo from "../assets/light-icon.png";
+import { sidebarItems } from "../utils/sidebar";
 const { Header, Sider, Content } = Layout;
+import { Outlet } from "react-router-dom";
+
 const Navbar = () => {
   const [collapsed, setCollapsed] = useState(false);
-  const {
-    token: { colorBgContainer, borderRadiusLG },
-  } = theme.useToken();
+  const [isFullScreen, setIsFullScreen] = useState(false);
+  const [path, setPath] = useState(window.location.pathname);
 
-  const { logout } = useLogout();
-  const { user } = useAuthContext();
-  const handleClick = () => {
-    logout();
+  const onMenu = (e) => {
+    if (e.key) {
+      setPath(e.key);
+    }
+  };
+
+  const openFullScreen = () => {
+    setIsFullScreen(!isFullScreen);
+    const doc = document.documentElement;
+
+    if (doc.requestFullscreen) {
+      doc.requestFullscreen();
+    } else if (doc.mozRequestFullScreen) {
+      doc.mozRequestFullScreen();
+    } else if (doc.webkitRequestFullscreen) {
+      doc.webkitRequestFullscreen();
+    } else if (doc.msRequestFullscreen) {
+      doc.msRequestFullscreen();
+    }
+
+    if (document.mozCancelFullScreen) {
+      document.mozCancelFullScreen();
+    } else if (document.webkitExitFullscreen) {
+      document.webkitExitFullscreen();
+    } else if (document.msExitFullscreen) {
+      document.msExitFullscreen();
+    }
   };
 
   return (
-    <Layout>
+    <Layout onClick={onMenu} style={{ height: "100vh" }}>
       <Sider trigger={null} collapsible collapsed={collapsed}>
-        <div className="demo-logo-vertical" />
+        <img src={logo} style={{ width: "100%", padding: "10px 5px" }} alt="" />
         <Menu
           theme="dark"
           mode="inline"
-          defaultSelectedKeys={["1"]}
-          items={[
-            {
-              key: "1",
-              icon: <UserOutlined />,
-              label: "nav 1",
-            },
-            {
-              key: "2",
-              icon: <VideoCameraOutlined />,
-              label: "nav 2",
-            },
-            {
-              key: "3",
-              icon: <UploadOutlined />,
-              label: "nav 3",
-            },
-          ]}
+          onClick={onMenu}
+          selectedKeys={[path]}
+          items={sidebarItems()}
         />
       </Sider>
       <Layout>
         <Header
           style={{
             padding: 0,
-            background: colorBgContainer,
+            background: "#fff",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: " space-between",
           }}
         >
           <Button
@@ -66,17 +77,30 @@ const Navbar = () => {
               height: 64,
             }}
           />
+          <Button
+            type="text"
+            onClick={openFullScreen}
+            icon={
+              isFullScreen ? <FullscreenExitOutlined /> : <FullscreenOutlined />
+            }
+            style={{
+              marginRight: "20px",
+              fontSize: "16px",
+              width: 50,
+              height: 50,
+            }}
+          />
         </Header>
         <Content
           style={{
-            margin: "24px 16px",
-            padding: 24,
-            minHeight: 280,
-            background: colorBgContainer,
-            borderRadius: borderRadiusLG,
+            margin: "10px",
+            padding: 20,
+            background: "#fff",
+            borderRadius: "#001529",
+            overflow: "auto",
           }}
         >
-          Content
+          <Outlet />
         </Content>
       </Layout>
     </Layout>
